@@ -30,6 +30,8 @@ public interface IExecuteable {
    */
   void executeDelay(AbsHandlerTask r, long delayMills, boolean isAsync);
 
+  void executeDelayWithTimeOut(AbsHandlerTask r, long delayMills, boolean isAsync,long timeOut);
+
   /**
    * 如果任务未执行，直接取消任务且不会回调结果。如果已执行或执行完毕，则不回调结果
    * @param token 任务的 token

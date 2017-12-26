@@ -58,8 +58,16 @@ public abstract class AbsBaseModel implements IExecuteable{
     if (r == null) throw new IllegalArgumentException("execute task can't null.");
     if (delayMills < 0) throw new IllegalArgumentException("delayMills can't < 0.");
     if (isAsync) r.setCallbackOnUIThread(isAsync);
-    mHandler.postAtTime(r, SystemClock.uptimeMillis() + delayMills);
+    mHandler.postAtTime(r, r.getToken(),SystemClock.uptimeMillis() + delayMills);
+  }
 
+  @Override public void executeDelayWithTimeOut(AbsHandlerTask r, long delayMills, boolean isAsync,
+      long timeOut) {
+    if (r == null) throw new IllegalArgumentException("execute task can't null.");
+    if (delayMills < 0) throw new IllegalArgumentException("delayMills can't < 0.");
+    if (isAsync) r.setCallbackOnUIThread(isAsync);
+    r.setTimeOut(timeOut);
+    mHandler.postAtTime(r, r.getToken(),SystemClock.uptimeMillis() + delayMills);
   }
 
   @Override public void cancel(Object token) {
