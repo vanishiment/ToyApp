@@ -12,6 +12,7 @@ public abstract class AbsBaseModel implements IExecuteable{
 
   private HandlerThread mHandlerThread;
   private Handler mHandler;
+  private MessageQueue mQueue;
 
   public AbsBaseModel() {
     if (mHandlerThread == null){
@@ -25,8 +26,8 @@ public abstract class AbsBaseModel implements IExecuteable{
     try {
       Field field = Looper.class.getDeclaredField("mQueue");
       field.setAccessible(true);
-      MessageQueue queue = (MessageQueue) field.get(mHandler.getLooper());
-      queue.addIdleHandler(new MessageQueue.IdleHandler() {
+      mQueue = (MessageQueue) field.get(mHandler.getLooper());
+      mQueue.addIdleHandler(new MessageQueue.IdleHandler() {
         @Override public boolean queueIdle() {
           onQueueIdle();
           return true;

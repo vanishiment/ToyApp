@@ -8,11 +8,21 @@ public class AsyncExecutorService {
 
   private static final int DEFAULT_THREAD_COUNT = 3;
 
+  private AbsBaseModel[] baseModels;
+
   private static final class Holder{
     private static final AsyncExecutorService SERVICE = new AsyncExecutorService();
   }
   public static AsyncExecutorService get(){
     return Holder.SERVICE;
+  }
+
+  private AsyncExecutorService() {
+    init();
+  }
+
+  private void init(){
+
   }
 
   private void adjustThreadCount(NetworkInfo info) {
@@ -54,7 +64,14 @@ public class AsyncExecutorService {
   }
 
   private void setThreadCount(int threadCount){
+    baseModels = new AbsBaseModel[threadCount];
+    for (int i = 0; i < baseModels.length; i++) {
+      baseModels[i] = new AbsBaseModel() {
+        @Override public void onQueueIdle() {
 
+        }
+      };
+    }
   }
 
 }
